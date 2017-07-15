@@ -1,4 +1,4 @@
-# RuBy程序说明
+# Ruby程序说明
 程序创建了类Student，含有initialize()方法与display()方法。其中initialize()方法用于初始化变量：id,name,gender,age；display()方法用于输出随机生成的学生信息。<br>
 主程序中先判断文件“student.yml”存在性：exist =  File.open("student.yml") if File::exists?("student.yml")，如果该文件已经存在，则输出文件内容：
 puts File.read("student.yml")。若文件不存在，则新建文件aFile = File.new("student.yml","w+")，并先在文件头部写入项目名：id,name,gender,age。数组student[]用于存放实例化对象，
