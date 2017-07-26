@@ -1,0 +1,34 @@
+<form action="/">
+ID:<br>
+  <input type="text" name="id">
+<br>
+作者:<br>
+  <input type="text" name="author">
+<br>
+  <input type="submit" value="筛选" >
+</form>
+
+<input type="button" value="添加留言" onclick="location.href='add'">
+<br><br>
+<% if @result != "输入有误！"%>
+  <% if @newarry[1] == '无此留言！' || @newarry == '无此留言！' %>
+     无此留言！
+  <% else %>
+    <%=@result%>
+    <% id = @time_ %>
+    <% id.times { %>
+      <table width = "700">
+        <tr>
+          <td><%=@newarry[id].get_message %></td>
+          <td>
+            <input type="button" value="删除" onclick="location.href='delete/<%=id %>'">
+            <input type="button" value="编辑留言" onclick="location.href='edit/<%=@newarry[id].get_id %>'">
+          </td>
+        </tr>
+      </table>
+    <% id = id - 1  %>
+    <% } %>
+  <% end %>
+<% else %>
+  <%=@result%>
+<% end %>
