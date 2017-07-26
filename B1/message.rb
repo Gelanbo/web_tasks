@@ -66,14 +66,6 @@ class Manager
     end
   end
 
-  #def findall_message(arry)
-  #  n = 1
-  #  $message_num.times{
-  #  puts arry[n].get_message()
-  #  n = n + 1
-  #  }
-  #end
-
   def find_message(arry,id_or_author)
     if "#{id_or_author.class}" == "Fixnum"
       n = 1
