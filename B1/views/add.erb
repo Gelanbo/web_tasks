@@ -1,0 +1,12 @@
+<% if @result == 1 %>
+  <form action="/add" method="POST">
+  内容:<br>
+    <input type="text" name="message">
+  作者:<br>
+    <input type="text" name="author">
+  <br>
+    <input type="submit" value="提交" >
+  </form>
+<% else %>
+  <%=@result%>
+<%end%>
