@@ -1,7 +1,0 @@
-<%=@result%>
-<% if @result == "原密码输入有误！" || @result == "原密码错误！"%>
-  <% puts session[:password]%>
-  <input type="button" value="返回修改" onclick="location.href='updatepassword'">
-<% else %>
-  <input type="button" value="重新登录" onclick="location.href='/login'">
-<% end %>
