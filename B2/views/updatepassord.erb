@@ -1,0 +1,10 @@
+用户名：<%=session[:username]%><br><br>
+<form action="/updatepassword" target="_blank" method="POST">
+原密码:<br>
+  <input type="password" name="oldpassword">
+<br>
+新密码:<br>
+  <input type="password" name="newpassword">
+<br>
+  <input type="submit" value="修改" >
+</form>
