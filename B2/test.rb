@@ -3,21 +3,58 @@ require 'sinatra'
 require 'erb'
 require 'active_record'
 require 'digest/sha1'
+require 'yaml'
+
+t = File.open("t.yml","r")
+a = YAML.load(t)
 
 ActiveRecord::Base.establish_connection(
 :adapter => "mysql2",
 :host => "localhost",
-:username => "root",  # mysql用户名
-:password => "5648603257",  # mysql密码
-:database => "Test" # mysql数据库名
+:username => "#{a['username']}",  # mysql用户名
+:password => "#{a['password']}",  # mysql密码
+:database => "#{a['database']}" # mysql数据库名
 )
-configure do
-  enable :sessions
+
+class CreateUsers < ActiveRecord::Migration[5.0]
+  def self.up
+    create_table :users do |t|
+      t.string :username
+      t.string :password
+    end
+  end
+
+  def self.down
+    drop_table :users
+  end
+end
+CreateUsers.up
+class User < ActiveRecord::Base
+  validates :username, presence: String
+  validates :password, presence: String
 end
 
-class User < ActiveRecord::Base
+
+class CreateMessagetbls < ActiveRecord::Migration[5.0]
+  def self.up
+    create_table :messagetbls do |t|
+      t.string :content
+      t.integer :user_id
+      t.string :created_at
+    end
+  end
+
+  def self.down
+    drop_table :messagetbls
+  end
 end
+CreateMessagetbls.up
 class Messagetbl < ActiveRecord::Base
+  validates :content, length: { minimum: 10 }
+end
+
+configure do
+  enable :sessions
 end
 
 message_arry = Array.new(100)
@@ -31,7 +68,7 @@ id = 1
   a_message = rand(36 ** 15).to_s(36)
   message_arry[id] = manager.add_message(id,a_message,the_author,the_author)
   password = rand(36 ** 10).to_s(36)
-  User.create(:username => the_author, :password => password)
+  User.create(:username => the_author, :password => password).valid?
   Messagetbl.create(:content => a_message, :user_id =>id, :created_at => message_arry[id].get_time())
   id = id + 1
 }
@@ -81,8 +118,11 @@ post '/' do
     end
   end
   if @result != "该用户名已被注册！"
-    @result = "注册成功！"
-    User.create(:username => params[:username], :password => params[:password])
+    if User.create(:username => params[:username], :password => params[:password]).valid?
+      @result = "注册成功！"
+    else
+      @result = "输入有误！"
+    end
   end
   erb:regist_result
 end
@@ -156,7 +196,9 @@ post '/add' do
       new_id = message_arry[manager.get() - 1].get_id().to_i + 1
       manager_.set_id(new_id)
       message_arry[manager.get()] = manager_
-      Messagetbl.create(:content => params['message'], :user_id =>new_id, :created_at => manager_.get_time())
+      if Messagetbl.create(:content => params['message'], :user_id =>new_id, :created_at => manager_.get_time()).invalid?
+        @result = "创建失败！"
+      end
       id = id + 1
       @newarry = message_arry
     end
