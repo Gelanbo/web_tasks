@@ -1,5 +1,5 @@
 <%=@result%><br>
-<% if @result == "该用户名已被注册！"%>
+<% if @result != "注册成功！"%>
   <input type="button" value="返回注册页面" onclick="location.href='/signup'">
 <% else %>
   <input type="button" value="返回首页" onclick="location.href='/'">
