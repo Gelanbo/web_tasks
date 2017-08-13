@@ -1,4 +1,6 @@
 欢迎：<%=session[:username]%> !&nbsp;&nbsp;当前状态：在线 &nbsp;&nbsp;&nbsp;&nbsp;ID：<%=session[:id]%>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" value="退出登录" onclick="location.href='/logoff'">
 <br><input type="button" value="修改密码" onclick="location.href='updatepassword'">
 <br><br>我的留言：<br>
 <% id = @time_ %>
