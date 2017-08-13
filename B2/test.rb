@@ -1,66 +1,27 @@
 require File.dirname(__FILE__)+'/message'
+require File.dirname(__FILE__)+'/database'
 require 'sinatra'
 require 'erb'
 require 'active_record'
 require 'digest/sha1'
-require 'yaml'
-
-t = File.open("t.yml","r")
-a = YAML.load(t)
-
-ActiveRecord::Base.establish_connection(
-:adapter => "mysql2",
-:host => "localhost",
-:username => "#{a['username']}",  # mysql用户名
-:password => "#{a['password']}",  # mysql密码
-:database => "#{a['database']}" # mysql数据库名
-)
-
-class CreateUsers < ActiveRecord::Migration[5.0]
-  def self.up
-    create_table :users do |t|
-      t.string :username
-      t.string :password
-    end
-  end
-
-  def self.down
-    drop_table :users
-  end
-end
-CreateUsers.up
-class User < ActiveRecord::Base
-  validates :username, presence: String
-  validates :password, presence: String
-end
-
-
-class CreateMessagetbls < ActiveRecord::Migration[5.0]
-  def self.up
-    create_table :messagetbls do |t|
-      t.string :content
-      t.integer :user_id
-      t.string :created_at
-    end
-  end
-
-  def self.down
-    drop_table :messagetbls
-  end
-end
-CreateMessagetbls.up
-class Messagetbl < ActiveRecord::Base
-  validates :content, length: { minimum: 10 }
-end
 
 configure do
   enable :sessions
+  CreateUsers.up
+  class User < ActiveRecord::Base
+    validates :username, presence: String
+    validates :password, presence: String
+  end
+
+  CreateMessagetbls.up
+  class Messagetbl < ActiveRecord::Base
+    validates :content, length: { minimum: 10 }
+  end
 end
 
 message_arry = Array.new(100)
 manager = Manager.new
 id = 1
-
 
 10.times{
   sleep(0.02)
@@ -72,8 +33,6 @@ id = 1
   Messagetbl.create(:content => a_message, :user_id =>id, :created_at => message_arry[id].get_time())
   id = id + 1
 }
-
-
 
 get '/' do
   if session[:admin] == true
@@ -111,7 +70,7 @@ get '/signup' do
   erb:signup
 end
 
-post '/' do
+post '/signup' do
   User.all.each do |user|
     if user.username == params[:username]
       @result = "该用户名已被注册！"
@@ -179,7 +138,11 @@ get '/delete/:id' do
 end
 
 get '/add' do
-  erb:add
+  if session[:admin] == true
+    erb:add
+  else
+    redirect to('login')
+  end
 end
 
 post '/add' do
@@ -240,14 +203,22 @@ post '/edit/:id' do
 end
 
 get '/myzone' do
-  @newarry = Array.new(100)
-  @newarry = manager.find_message(message_arry,session[:username],2)
-  @time_ = manager.get_rn() - 1
-  erb:myzone
+  if session[:admin] == true
+    @newarry = Array.new(100)
+    @newarry = manager.find_message(message_arry,session[:username],2)
+    @time_ = manager.get_rn() - 1
+    erb:myzone
+  else
+    redirect to("login")
+  end
 end
 
 get '/updatepassword' do
-  erb:updatepassord
+  if session[:admin] == true
+    erb:updatepassord
+  else
+    redirect to("login")
+  end
 end
 
 post '/updatepassword' do
@@ -266,4 +237,9 @@ post '/updatepassword' do
     session[:admin] = false
     erb:updateresult
   end
+end
+
+get '/logoff' do
+  session[:admin] = false
+  erb:logoff
 end
