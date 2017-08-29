@@ -1,0 +1,11 @@
+<h1><strong>添加留言</strong></h1>
+<%= form_for :comment,url:"/add_messages/#{@post_id}" do |f|%>
+  <p>
+    <%= f.label '内容' %><br>
+    <%= f.text_area :content %>
+  </p>
+
+  <p>
+    <%= f.submit '提交'%>
+  </p>
+<% end %>

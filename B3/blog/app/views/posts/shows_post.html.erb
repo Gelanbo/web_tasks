@@ -1,0 +1,26 @@
+<p>标题：
+  <%= @post.title %>
+</p>
+
+<p>内容：
+  <%= @post.content %>
+</p>
+
+<table>
+  <tr>
+    <th>留言列表</th>
+  </tr>
+
+    <% @comments.each do |c| %>
+      <tr>
+        <% if c.pass == true%>
+          <td><%= c.content %></td>
+          <td><%= c.created_at %></td>
+        <% end %>
+      </tr>
+    <% end %>
+
+</table>
+
+<%= link_to '添加留言',"/add_message/#{@post_id}" %>
+<%= link_to '返回','/visit' %>
