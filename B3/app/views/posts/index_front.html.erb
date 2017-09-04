@@ -1,0 +1,48 @@
+<h1><strong>文章列表</strong></h1>
+
+<%= form_for :post,url:"/search" do |post|%>
+
+  <p>
+    <%= post.label '搜索文章' %><br>
+    <%= post.text_field :title %>
+  </p>
+
+  <p>
+    <%= post.submit '搜索'%>
+  </p>
+<% end %>
+<br>
+
+<%= link_to '按时间查看',"/months_shows" %><br>
+
+<table>
+  <tr>
+    <th>标题</th>
+    <th>内容</th>
+  </tr>
+
+  <% @posts.each do |post| %>
+    <tr>
+      <td><%= post.title %></td>
+      <td><%= post.content %></td>
+      <td><%= post.updated_at %></td>
+      <td><%= link_to '查看文章',"/post_shows/#{@admin_id}/#{post.id}" %></td>
+    </tr>
+  <% end %>
+</table>
+<br>
+<%= will_paginate @posts %>
+<p><strong>意见反馈</strong></p>
+<%= form_for :feedback,url:"/feedback" do |f|%>
+
+  <p>
+    <%= f.label '内容' %><br>
+    <%= f.text_area :content %>
+  </p>
+
+  <p>
+    <%= f.submit '提交'%>
+  </p>
+<% end %>
+
+<%= link_to "返回首页","/" %>
