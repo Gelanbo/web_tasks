@@ -1,0 +1,18 @@
+<h1><strong>待审核留言<strong></h1>
+<table>
+  <tr>
+    <th>留言列表</th>
+  </tr>
+  <% if @comment != nil %>
+    <% @comment.each do |c| %>
+      <tr>
+          <td><%= c.content %></td>
+          <td><%= link_to "通过","/admin/pass/#{c.id}" %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+<br>
+<%= will_paginate @comment %>
+<br>
+<%= link_to "返回","/admin/list" %>
