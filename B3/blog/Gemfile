@@ -53,7 +53,3 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 #gem 'rails_kindeditor'
-<<<<<<< 7543c925bb722c641a63a2acefc51aaa92593073
-=======
-gem 'will_paginate', '~> 3.0'
->>>>>>> b3

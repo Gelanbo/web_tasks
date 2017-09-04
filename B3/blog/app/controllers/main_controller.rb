@@ -1,20 +1,11 @@
 class MainController < ApplicationController
-<<<<<<< 7543c925bb722c641a63a2acefc51aaa92593073
 
   def welcome
     session[:admin] = false
-=======
-  skip_before_action :require_login,only: [:welcome]
-
-  def welcome
-    session[:admin] = false
-    session[:adminname] = 'visitor'
->>>>>>> b3
     session[:lock_time] = Time.now - 1.day
     session[:login_times] = 0
   end
 
-<<<<<<< 7543c925bb722c641a63a2acefc51aaa92593073
   def login
   end
 
@@ -66,6 +57,4 @@ class MainController < ApplicationController
     session[:admin] = false
     redirect_to :root
   end
-=======
->>>>>>> b3
 end

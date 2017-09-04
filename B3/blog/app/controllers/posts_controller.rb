@@ -1,5 +1,4 @@
 class PostsController < ApplicationController
-<<<<<<< 7543c925bb722c641a63a2acefc51aaa92593073
   def index
     if session[:admin] == true
       @posts = Post.all
@@ -39,9 +38,6 @@ class PostsController < ApplicationController
       redirect_to '/login'
     end
   end
-=======
-  skip_before_action :require_login,only: [:index_front,:shows_post,:months_shows,:search,:show_search]
->>>>>>> b3
 
   def shows_post
     @post = Post.find(params[:post_id])
@@ -50,7 +46,6 @@ class PostsController < ApplicationController
   end
 
   def months_shows
-<<<<<<< 7543c925bb722c641a63a2acefc51aaa92593073
     @posts = Post.where(updated_at: (Time.now - 30.day)..Time.now)
     @posts_year = Post.where(updated_at: (Time.now - 365.day)..Time.now)
     @posts_early = Post.where("updated_at <= :end_date ")
@@ -94,40 +89,12 @@ class PostsController < ApplicationController
 
   def search
     @admin_id = Admin.find(1).id
-=======
-    @posts = Post.where(updated_at: (Time.now - 30.day)..Time.now).paginate(:page => params[:page], :per_page => 5)
-    @posts_year = Post.where(updated_at: (Time.now - 365.day)..Time.now)
-    @posts_early = Post.where("updated_at <= :end_date ")
-      {end_date: Time.now - 365.day}
-    @admin_id = 0
-  end
-
-  def index_front
-    @posts = Post.paginate(:page => params[:page], :per_page => 5)
-    if session[:adminname] != 'visitor'
-      @admin_id = Admin.find_by(adminname: session[:adminname]).id
-    else
-      @admin_id = 0
-    end
-  end
-
-  def search
-    if session[:adminname] != 'visitor'
-      @admin_id = Admin.find_by(adminname: session[:adminname]).id
-    else
-      @admin_id = 0
-    end
->>>>>>> b3
     @posts = Post.where(post_params)
   end
 
   def show_search
     @post = Post.find(params[:post_id])
-<<<<<<< 7543c925bb722c641a63a2acefc51aaa92593073
   end    
-=======
-  end
->>>>>>> b3
 
   private
     def post_params
