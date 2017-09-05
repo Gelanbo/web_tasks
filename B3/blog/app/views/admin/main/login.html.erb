@@ -1,10 +1,13 @@
 <p>
   <h1><strong>管理员登录</strong></h1>
 </p>
-<%= form_tag "/start_login" do %>
+<%= form_tag "/admin/start_login" do %>
   <%= label_tag "用户名" %><br>
   <%= text_field_tag :adminname, params[:adminname] %><br>
   <%= label_tag "密码" %><br>
   <%= password_field_tag :password,params[:password]  %><br>
   <%= submit_tag "登录" %>
 <% end %>
+<%= link_to '注册','/admin/signup' %>
+<br><br>
+<%= link_to '返回','/' %>

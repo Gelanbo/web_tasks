@@ -1,11 +1,6 @@
 class CommentsController < ApplicationController
-  def index
-    if session[:admin] == true
-      @comment = Comment.all
-    else
-      redirect_to '/login'
-    end
-  end
+  skip_before_action :require_login,only: [:create,:creates]
+
   def create
     @post = Post.find(params[:post_id])
     @post_id = @post.id
@@ -17,16 +12,6 @@ class CommentsController < ApplicationController
     @comment.pass = false
     @comment.save
     redirect_to "/post_shows/#{Admin.find(1).id}/#{@comment.post_id}"
-  end
-  def pass
-    if session[:admin] == true
-      @comment = Comment.find(params[:comment_id])
-      @comment.pass = true
-      @comment.save
-      redirect_to '/comment_index'
-    else
-      redirect_to '/login'
-    end
   end
 
   private

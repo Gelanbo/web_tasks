@@ -1,6 +1,5 @@
 <h1><strong>文章列表</strong></h1>
 
-
 <%= form_for :post,url:"/search" do |post|%>
 
   <p>
@@ -31,7 +30,8 @@
     </tr>
   <% end %>
 </table>
-
+<br>
+<%= will_paginate @posts %>
 <p><strong>意见反馈</strong></p>
 <%= form_for :feedback,url:"/feedback" do |f|%>
 
@@ -44,3 +44,5 @@
     <%= f.submit '提交'%>
   </p>
 <% end %>
+
+<%= link_to "返回首页","/" %>

@@ -1,5 +1,5 @@
 <h1><strong>创建文章</strong></h1>
-<%= form_for :post,url:"/post_show/#{@admin_id}" do |f|%>
+<%= form_for :post,url:"/admin/post_show/#{@admin_id}" do |f|%>
   <p>
     <%= f.label '标题' %><br>
     <%= f.text_field :title %>
